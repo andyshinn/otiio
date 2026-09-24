@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # hatch-vcs needs tags to compute the version
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.12"
+      - run: uv sync --all-extras --locked
+      - run: uv run pytest
+      - run: uv build
+      - name: Check the version matches the release tag
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          ls dist
+          test -f "dist/otiio-${tag}.tar.gz"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/otiio/
+    permissions:
+      id-token: write # PyPI trusted publishing (OIDC); no API token needed
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: dist
+          path: dist/
+      - uses: astral-sh/setup-uv@v7
+      - run: uv publish --trusted-publishing always
