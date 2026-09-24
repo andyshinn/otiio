@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "otiio"
 dynamic = ["version"]
-description = "Read Otii 3 project files (.otii3) with numpy. Unofficial, not affiliated with Qoitech."
+description = "Read Otii 3 project files (.otii3) with numpy."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]

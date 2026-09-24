@@ -1,0 +1,2 @@
+# Otii project files and exports are exact captures; never convert line endings.
+tests/data/** -text

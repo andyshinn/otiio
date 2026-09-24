@@ -1,4 +1,4 @@
-"""Read Otii 3 project files. Unofficial; not affiliated with Qoitech."""
+"""Read Otii 3 project files."""
 
 from importlib.metadata import PackageNotFoundError, version
 
